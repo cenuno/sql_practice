@@ -5,8 +5,10 @@ a SQLite and PostgreSQL database from files from the [City of Chicago's open dat
 
 ```bash
 # install necessary packages
+# note: takes about 2 minutes
 sh install_packages.sh
 
 # download chicago data sets
+# note: takes about 2 minutes
 sh create_chicago_database.sh
 ```

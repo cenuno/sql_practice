@@ -31,12 +31,12 @@ gunzip il_xwalk.csv.gz
 wget https://github.com/cenuno/exploring_chicago_data/raw/master/write_data/cps_sy1819_cca.csv
 
 # download CPS dropout data
-wget -O cps_dropout_rate_2011_2019.xlsx https://cps.edu/Performance/Documents/DataFiles/Metrics_CohortGraduationDropoutAdjusted_SchoolLevel_2011to2019.xls
+wget -O cps_dropout_rate_2011_2019.xls https://cps.edu/Performance/Documents/DataFiles/Metrics_CohortGraduationDropoutAdjusted_SchoolLevel_2011to2019.xls
 
 # transform the second sheet into a .csv file
-# note: due to the way the .xlsx file is organized, there are redundant
+# note: due to the way the .xls file is organized, there are redundant
 #       column names. Ignore the warning messages.
-in2csv cps_dropout_rate_2011_2019.xlsx --sheet="School 5 Year Cohort Rates" --skip-lines=2 | csvcut -c 1,2,3,4,5,6,7,8,9,10,11,12 > cps_dropout_rates_sy11_sy19.csv
+in2csv cps_dropout_rate_2011_2019.xls --sheet="School 5 Year Cohort Rates" --skip-lines=2 | csvcut -c 1,2,3,4,5,6,7,8,9,10,11,12 > cps_dropout_rate_sy11_sy19.csv
 
 # download Chicago 2019 crimes
 wget -O crimes_2019.csv https://data.cityofchicago.org/api/views/w98m-zvie/rows.csv?accessType=DOWNLOAD
