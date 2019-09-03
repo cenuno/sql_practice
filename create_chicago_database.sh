@@ -23,6 +23,10 @@ gunzip il_wac_S000_JT00_2017.csv.gz
 # download 2017 IL jobs geographic crosswalk file
 wget https://lehd.ces.census.gov/data/lodes/LODES7/il/il_xwalk.csv.gz
 
+# decompress the 2017 IL jobs crosswalk file
+# note: this will delete the original .csv.gz file
+gunzip il_xwalk.csv.gz
+
 # download CPS SY1819 profiles
 wget https://github.com/cenuno/exploring_chicago_data/raw/master/write_data/cps_sy1819_cca.csv
 
@@ -46,4 +50,6 @@ wget -O community_areas.csv https://data.cityofchicago.org/api/views/igwz-8jzy/r
 # download chicago food inspection file
 wget -O food_inspections.csv https://data.cityofchicago.org/api/views/4ijn-s7e5/rows.csv?accessType=DOWNLOAD
 
+# add all the .csv files to one SQLite database
+#csvs-to-sqlite il_wac_S000_JT00_2017.csv
 
