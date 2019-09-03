@@ -40,5 +40,10 @@ Here is more information regarding the different tables that make up the `chicag
 
 4. Identify the top 10 community areas that have the highest number of jobs in 2017.
 
+5. Identify the schools that are located in community areas that have the highest number of jobs in 2017.
 
+6. Count how many schools, by `overall_rating`, are located in community areas where the number of crimes is higher than the median number of crimes.
+
+7. By `Facility Type`, what is the percentage breakdown (i.e. 0-1) of `results` for all food establishments over time. _Note: be sure to include all unique values in the `results` column._
+    + Bonus: include both the the percentage breakdown and the total number of food establishments per `Facility Type`.
 
