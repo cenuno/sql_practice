@@ -43,7 +43,7 @@ cps_dropout_df_long.sort_values(by=["school_id", "school_year"], inplace=True)
 cps_dropout_df_long.reset_index(drop=True, inplace=True)
 
 # export the data frame as a .csv file ----
-cps_dropout_df_long.to_csv("../write_data/cps_dropout_rates_2011_2019.csv",
+cps_dropout_df_long.to_csv("../write_data/cps_dropout_rate_2011_2019.csv",
                            index=False)
 
 # end of script #
