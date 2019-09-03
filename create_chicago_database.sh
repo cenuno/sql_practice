@@ -36,7 +36,12 @@ wget -O cps_dropout_rate_2011_2019.xls https://cps.edu/Performance/Documents/Dat
 # transform the second sheet into a .csv file
 # note: due to the way the .xls file is organized, there are redundant
 #       column names. Ignore the warning messages.
-in2csv cps_dropout_rate_2011_2019.xls --sheet="School 5 Year Cohort Rates" --skip-lines=2 | csvcut -c 1,2,3,4,5,6,7,8,9,10,11,12 > cps_dropout_rate_sy11_sy19.csv
+in2csv cps_dropout_rate_2011_2019.xls --sheet="School 5 Year Cohort Rates" \
+--skip-lines=2 | csvcut -c 1,2,3,4,5,6,7,8,9,10,11,12 \
+> cps_dropout_rate_2011_2019.csv
+
+# transform the dropout rate data from wide to long
+python ../python/reshape_dropout.py
 
 # download Chicago 2019 crimes
 wget -O crimes_2019.csv https://data.cityofchicago.org/api/views/w98m-zvie/rows.csv?accessType=DOWNLOAD
@@ -51,5 +56,8 @@ wget -O community_areas.csv https://data.cityofchicago.org/api/views/igwz-8jzy/r
 wget -O food_inspections.csv https://data.cityofchicago.org/api/views/4ijn-s7e5/rows.csv?accessType=DOWNLOAD
 
 # add all the .csv files to one SQLite database
-#csvs-to-sqlite il_wac_S000_JT00_2017.csv
+# csvs-to-sqlite il_wac_S000_JT00_2017.csv il_xwalk.csv census_tracts_2010.csv \
+# ../write_data/cps_dropout_rate_2011_2019.csv \
+# crimes_2019.csv food_inspections.csv community_areas.csv \
+# cps_sy1819_cca.csv ../write_data/chicago.db
 
