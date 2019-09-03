@@ -34,4 +34,11 @@ Here is more information regarding the different tables that make up the `chicag
 
 1. In the `cps_dropout_rate_2011_2019` table, count how many records appear for each `school_year`. _Note: it is helpful to include the `school_year` column and to order the results by it as well._
 
+2. Identify the schools and their community area whose dropout rate in school year 2019 is greater than or equal to 25 percent.
+
+3. Identify the top 10 community areas that have the highest number of crimes in 2019.
+
+4. Identify the top 10 community areas that have the highest number of jobs in 2017.
+
+
 
