@@ -56,8 +56,16 @@ wget -O community_areas.csv https://data.cityofchicago.org/api/views/igwz-8jzy/r
 wget -O food_inspections.csv https://data.cityofchicago.org/api/views/4ijn-s7e5/rows.csv?accessType=DOWNLOAD
 
 # add all the .csv files to one SQLite database
-# csvs-to-sqlite il_wac_S000_JT00_2017.csv il_xwalk.csv census_tracts_2010.csv \
-# ../write_data/cps_dropout_rate_2011_2019.csv \
-# crimes_2019.csv food_inspections.csv community_areas.csv \
-# cps_sy1819_cca.csv ../write_data/chicago.db
+csvs-to-sqlite il_wac_S000_JT00_2017.csv il_xwalk.csv census_tracts_2010.csv \
+../write_data/cps_dropout_rate_2011_2019.csv \
+crimes_2019.csv food_inspections.csv community_areas.csv \
+cps_sy1819_cca.csv ../write_data/chicago.db
 
+# switch to write_data/ dir
+cd ../write_data/
+
+# create a new psql database
+createdb chicago
+
+# transfer SQLite database to the chicago PostgreSQL database
+pgloader chicago.db postgresql:///chicago
