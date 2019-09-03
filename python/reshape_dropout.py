@@ -9,7 +9,7 @@ def clean_int_text(x):
 
 
 # load necessary data ----
-cps_dropout_df = pd.read_csv("cps_dropout_rates_2011_2019.csv")
+cps_dropout_df = pd.read_csv("cps_dropout_rate_2011_2019.csv")
 
 # data preprocessing ----
 # make all column names lower case and
