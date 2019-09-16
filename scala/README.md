@@ -10,6 +10,9 @@ So far, these notes plan on using the [Spark Standalone Manager](https://spark.a
 
 Be sure to install the following via [`brew`](https://brew.sh/) in the [Terminal](https://support.apple.com/guide/terminal/open-or-quit-terminal-apd5265185d-f365-44cb-8b09-71a064a42125/mac):
 
+_Note: all of the commands down below can also be found in the
+`install_packages.sh` in the project directory._
+
 ```bash
 # upgrade all brew packages & update homebrew
 brew upgrade && brew update
