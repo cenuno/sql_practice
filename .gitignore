@@ -1,6 +1,7 @@
 # data directories
 raw_data/
 write_data/
+metastore_db/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
