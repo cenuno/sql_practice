@@ -1,7 +1,10 @@
 # data directories
 raw_data/
-write_data/
+write_data/sy19_school_count_by_cca/
 metastore_db/
+
+# SQLite files
+*.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
