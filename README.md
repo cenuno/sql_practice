@@ -1,21 +1,33 @@
 # SQL Practice
 
-This repository contains two `.sh` files that will allow you to create both
-a SQLite and PostgreSQL database from files from the [City of Chicago's open data portal](https://data.cityofchicago.org/).
+This repository is meant to help users practice their SQL skills using Python,
+PostgreSQL, and Scala! The three really come together nicely using Apache Spark.
+
+## Getting Started
+
+Please run the following bash commands after you have forked and clone the `sql_practice` repo:
 
 ```bash
 # install necessary packages
-# note: takes about 2 minutes
-sh install_packages.sh
+# note: takes about 3-5 minutes
+sh 01_install_packages.sh
 
 # download chicago data sets
-# note: takes about 3 minutes
-sh create_chicago_database.sh
+# note: takes about 5-10 minutes
+sh 02_create_chicago_database.sh
+
+# create and switch into the psypark-env conda environment
+sh 03_create_pyspark_env.sh
+
+# reload shell environment
+source ~/.bash_profile
 ```
 
-## Database
+_Note: this repository assumes you have Homebrew and Anaconda installed on your macOS/Linux system. If not, please read this [tutorial](https://medium.com/ayuth/install-anaconda-on-macos-with-homebrew-c94437d63a37)._
 
-The `create_chicago_database.sh` script creates both a `write_data/chicago.db` and `postgresql:///chicago` database to be used with either SQLite or PostgreSQL.
+## `chicago` Database
+
+The `02_create_chicago_database.sh` script creates both a `write_data/chicago.db` and `postgresql:///chicago` database to be used with either SQLite or PostgreSQL.
 
 Here is more information regarding the different tables that make up the `chicago` database:
 

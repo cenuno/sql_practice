@@ -41,3 +41,37 @@ spark-shell --master local[1]
 ```
 
 For greater detail on `spark-shell`, please see this [online book](https://jaceklaskowski.gitbooks.io/mastering-apache-spark/spark-shell.html).
+
+### Exporting Spark DataFrames as CSV Files
+
+The following `scala` command produces a directory:
+
+```scala
+(community.write
+  .option("header", "true")
+  .csv("write_data/sy19_school_count_by_cca"))
+```
+
+This is counter-intuitive since the  `.csv` command itself implies that
+the output will be a single `.csv` file. However, this directory contains many 
+`.csv` files, each one a piece of the entire spark data frame.
+
+This requires us to bundle them together ourselves via a system package 
+(such as [`csvkit`](https://csvkit.readthedocs.io/en/latest/index.html)) 
+where we manually stack the partioned `.csv` files ontop one another 
+to form a singluar `.csv` file:
+
+```bash
+# stack partioned .csv files into one
+csvstack --filenames sy19_school_count_by_cca/*.csv > sy19_school_count_by_cca.csv
+```
+
+Spark does come with a helper function (coalace) that moves all the
+partioned files into one; however, that assumes the output file can be read 
+in memory which is never a guarantee.
+
+For more on this, please see this excellent [Medium](https://medium.com/@mrpowers/managing-spark-partitions-with-coalesce-and-repartition-4050c57ad5c4#.36o8a7b5j) 
+article these two Stack Overflow post:
+
+* https://stackoverflow.com/questions/31610971/spark-repartition-vs-coalesce
+* https://stackoverflow.com/a/38323127/7954106
