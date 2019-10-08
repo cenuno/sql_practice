@@ -50,7 +50,7 @@ Here is more information regarding the different tables that make up the `chicag
 
 3. Identify the top 10 community areas that have the highest number of crimes in 2019.
 
-4. Identify the top 10 community areas that have the highest number of jobs in 2017.
+4. Count the number of 2017 jobs in each community area.
 
 5. Identify the schools that are located in community areas that have the highest number of jobs in 2017.
 
