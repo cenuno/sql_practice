@@ -2,6 +2,10 @@
 raw_data/
 write_data/sy19_school_count_by_cca/
 metastore_db/
+spark-warehouse/
+
+# Spark log file
+derby.log
 
 # SQLite files
 *.db

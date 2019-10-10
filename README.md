@@ -1,21 +1,22 @@
 # SQL Practice
 
-This repository contains two `.sh` files that will allow you to create both
-a SQLite and PostgreSQL database from files from the [City of Chicago's open data portal](https://data.cityofchicago.org/).
+This repository is meant to help users practice their SQL skills using Python,
+PostgreSQL, and Scala! The three really come together nicely using Apache Spark.
+
+## Getting Started
+
+Please run the following bash commands after you have forked and clone the `sql_practice` repo:
 
 ```bash
-# install necessary packages
-# note: takes about 2 minutes
-sh install_packages.sh
-
-# download chicago data sets
-# note: takes about 3 minutes
-sh create_chicago_database.sh
+# install necessary packages and configures your environment for psql & pyspark
+sh setup.sh
 ```
 
-## Database
+_Note: this repository assumes you have Homebrew and Anaconda installed on your macOS/Linux system. If not, please read this [tutorial](https://medium.com/ayuth/install-anaconda-on-macos-with-homebrew-c94437d63a37)._
 
-The `create_chicago_database.sh` script creates both a `write_data/chicago.db` and `postgresql:///chicago` database to be used with either SQLite or PostgreSQL.
+## `chicago` Database
+
+The `02_create_chicago_database.sh` script creates both a `write_data/chicago.db` and `postgresql:///chicago` database to be used with either SQLite or PostgreSQL.
 
 Here is more information regarding the different tables that make up the `chicago` database:
 
@@ -30,6 +31,23 @@ Here is more information regarding the different tables that make up the `chicag
 | `il_wac_s000_jt00_2017` | [Workplace Area Characteristic](https://lehd.ces.census.gov/data/lodes/LODES7/LODESTechDoc7.4.pdf) data for IL in 2017 that counts the total number of jobs for workers in all jobs by Census Block. | [LEHD Data](https://lehd.ces.census.gov/data/) & [IL 2017 WAC Data](https://lehd.ces.census.gov/data/lodes/LODES7/il/wac/il_wac_S000_JT00_2017.csv.gz) |
 | `il_xwalk` | [Geographic crosswalk](https://lehd.ces.census.gov/data/lodes/LODES7/LODESTechDoc7.4.pdf) data used to help aggregate census blocks up to census tracts, zip codes, counties, and states. | [LEHD Data](https://lehd.ces.census.gov/data/) & [IL 2017 Geographic Crosswalk Data](https://lehd.ces.census.gov/data/lodes/LODES7/il/il_xwalk.csv.gz) |
 
+### Transportation Network Providers - Trips ~20GB Data Set
+
+Most examples rely on the data sets found in [`bash/02_create_chicago_database.sh`](bash/02_create_chicago_database.sh). A few, however, rely on the ~20GB data set containing [ride share trips](https://data.cityofchicago.org/Transportation/Transportation-Network-Providers-Trips/m6dm-c72p/data) within the City of Chicago.
+
+All trips, starting November 2018, reported by Transportation Network Providers (sometimes called rideshare companies) to the City of Chicago as part of routine reporting required by ordinance. Census Tracts are suppressed in some cases, and times are rounded to the nearest 15 minutes. Fares are rounded to the nearest $2.50 and tips are rounded to the nearest $1.00.
+
+For more information regarding privacy of this data set, please see [here](http://dev.cityofchicago.org/open%20data/data%20portal/2019/04/12/tnp-taxi-privacy.html).
+
+#### Download Data
+
+To download the data, set aside about ~1.5 hours to download the file using the 
+following command:
+
+```bash
+sh bash/05_ride_share_data.sh
+```
+
 ## Questions
 
 1. In the `cps_dropout_rate_2011_2019` table, count how many records appear for each `school_year`. _Note: it is helpful to include the `school_year` column and to order the results by it as well._
@@ -38,7 +56,7 @@ Here is more information regarding the different tables that make up the `chicag
 
 3. Identify the top 10 community areas that have the highest number of crimes in 2019.
 
-4. Identify the top 10 community areas that have the highest number of jobs in 2017.
+4. Count the number of 2017 jobs in each community area.
 
 5. Identify the schools that are located in community areas that have the highest number of jobs in 2017.
 

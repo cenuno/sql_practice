@@ -19,10 +19,6 @@ brew install apache-spark
 # install hadoop in case you wish to use other types of clusters
 brew install hadoop
 
-# download the jar for PostgreSQL JDBC Driver 42.1.1 directly from the Maven repository
-# note: the .jar file will be placed into the appropriate jars/ directory
-wget -P /usr/local/Cellar/apache-spark/2.4.4/libexec/jars http://central.maven.org/maven2/org/postgresql/postgresql/42.1.1/postgresql-42.1.1.jar
-
 # install suite of command-line tools for converting to and working with CSV
 brew install csvkit
 

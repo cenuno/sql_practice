@@ -29,34 +29,6 @@ val community = spark.sql("""
   ORDER BY count DESC""")
 
 // export school count as csv
-/*
-  Note: notice that the file path is a directory and not a .csv file
-        this directory contains many .csv files, each one a piece of the
-        entire spark data frame.
-
-        this requires us to bundle them together ourselves
-        via a system package like csvstack (from csvkit) where we manually
-        stack the partioned .csv files ontop on one another to form one
-        comprehensive .csv file
-
-        ```bash
-        # stack partioned .csv files into one
-        csvstack --filenames sy19_school_count_by_cca/*.csv > sy19_school_count_by_cca.csv
-        ```
-
-  Note: Spark does come with a helper function (coalace) that moves all the
-        partioned files into one; however, that assumes the output file
-        can be read in memory which is never a guarantee.
-
-        For more on this, please see this excellent Medium article:
-        https://medium.com/@mrpowers/managing-spark-partitions-with-coalesce-and-repartition-4050c57ad5c4#.36o8a7b5j
-
-        and this Stack Overflow post:
-        https://stackoverflow.com/questions/31610971/spark-repartition-vs-coalesce
-
-        P.S. this is also good:
-        https://stackoverflow.com/a/38323127/7954106
-*/
 (community.write
   .option("header", "true")
   .csv("write_data/sy19_school_count_by_cca"))
