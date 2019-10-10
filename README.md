@@ -3,6 +3,10 @@
 This repository is meant to help users practice their SQL skills using Python,
 PostgreSQL, and Scala! The three really come together nicely using Apache Spark.
 
+## Requirement
+
+This project assumes you are using bash version no older than `3.2.57(1)-release`. You may encounter errors with the [`bash/03_spark_config.sh`](bash/03_spark_config.sh). One common error is that your older version of bash requires `-e` to active line breaks within a string being used with `echo` commands.
+
 ## Getting Started
 
 Please run the following bash commands after you have forked and clone the `sql_practice` repo:
