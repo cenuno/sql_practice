@@ -11,7 +11,7 @@ sh bash/02_create_chicago_database.sh
 
 # download JDBC Driver and create local variables needed to run pyspark ----
 # note: takes about ~1 minute
-sh bash/03_jdbc_driver.sh
+sh bash/03_spark_config.sh
 
 # reload shell environment ----
 source ~/.bash_profile
