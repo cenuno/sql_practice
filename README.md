@@ -8,19 +8,8 @@ PostgreSQL, and Scala! The three really come together nicely using Apache Spark.
 Please run the following bash commands after you have forked and clone the `sql_practice` repo:
 
 ```bash
-# install necessary packages
-# note: takes about 3-5 minutes
-sh 01_install_packages.sh
-
-# download chicago data sets
-# note: takes about 5-10 minutes
-sh 02_create_chicago_database.sh
-
-# create and switch into the psypark-env conda environment
-sh 03_create_pyspark_env.sh
-
-# reload shell environment
-source ~/.bash_profile
+# install necessary packages and configures your environment for psql & pyspark
+sh setup.sh
 ```
 
 _Note: this repository assumes you have Homebrew and Anaconda installed on your macOS/Linux system. If not, please read this [tutorial](https://medium.com/ayuth/install-anaconda-on-macos-with-homebrew-c94437d63a37)._

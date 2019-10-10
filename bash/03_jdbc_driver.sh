@@ -1,6 +1,6 @@
 # download the jar for PostgreSQL JDBC Driver 42.1.1 directly from the Maven repository
 # note: the .jar file will be placed into the appropriate jars/ directory
-#wget -P /usr/local/Cellar/apache-spark/2.4.4/libexec/jars http://central.maven.org/maven2/org/postgresql/postgresql/42.1.1/postgresql-42.1.1.jar
+wget -P /usr/local/Cellar/apache-spark/2.4.4/libexec/jars http://central.maven.org/maven2/org/postgresql/postgresql/42.1.1/postgresql-42.1.1.jar
 
 # modify ~/.bash_profile to include necessary variables ----
 echo "\n# === Added by https://github.com/cenuno/sql_practice/ ===\n" \
@@ -10,9 +10,6 @@ echo "\n# === Added by https://github.com/cenuno/sql_practice/ ===\n" \
 psql_jar_comment="# setup the class path for the JDBC Driver (i.e. for spark to connect to psql)"
 psql_jar_var="export PSQL_JAR=/usr/local/Cellar/apache-spark/2.4.4/libexec/jars/postgresql-42.1.1.jar"
 echo "${psql_jar_comment}\n${psql_jar_var}" >> ~/.bash_profile
-
-# reload ~/.bash_profile
-# source ~/.bash_profile
 
 # add variable that establishes the JDBC connection each time pyspark is used
 # to ~/.bash_profile
