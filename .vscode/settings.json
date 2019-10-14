@@ -1,9 +1,10 @@
 {
-    "python.linting.pylintEnabled": true,
+    "python.linting.pylintEnabled": false,
     "python.linting.pycodestyleEnabled": true,
     "python.linting.enabled": true,
     "editor.rulers": [80,120],
     "workbench.colorCustomizations": {
         "editorRuler.foreground": "#ff4081"
-    }
+    },
+    "python.pythonPath": "/Users/cnuno/anaconda3/envs/pyspark-env/bin/python"
 }
