@@ -1,130 +1,142 @@
-import sys
-from IPython.core import ultratb
+"""
+An introduction to using pyspark to load data from .csv and psql
+and using SparkDataFrames and SQL to perform a query
+"""
+
+# load necessary modules ----
+from python.cca_schema import schema
+import os
+from pyspark import SparkConf
 from pyspark.sql.session import SparkSession
-from pyspark.sql.types import (
-    BooleanType,
-    FloatType,
-    IntegerType,
-    StringType,
-    StructField,
-    StructType
-)
-from pyspark.sql.functions import to_timestamp
+from matplotlib import pyplot as plt
 
-# ensure error messages are color coded using IPython color schema ----
-sys.excepthook = ultratb.FormattedTB(mode="Verbose",
-                                     color_scheme="Linux",
-                                     call_pdb=False)
+# create configuration ----
+# note: as long as your ~/.bash_profile contains $PYSPARK_SUBMIT_ARGS
+#       none of the configuration code down below is necessary
 
-# construct schema ----
-# store column names in one string
-schemaString = """trip_id
-trip_start
-trip_end
-trip_seconds
-trip_miles
-pickup_census_tract
-dropoff_census_tract
-pickup_community_area
-dropoff_community_area
-fare
-tip
-additional_charges
-trip_total
-shared_trip_authorized
-trips_pooled
-pickup_centroid_latitude
-pickup_centroid_longitude
-pickup_centroid_location
-dropoff_centroid_latitude
-dropoff_centroid_longitude
-dropoff_centroid_location"""
+# add driver path
+psql_jar_path = os.getenv("PSQL_JAR")
 
-# partion non-string type column types
-bool_fields = set(["shared_trip_authorized"])
+# create configuration object with appropriate modifications
+conf = SparkConf()
+conf.set("spark.jars", psql_jar_path)
+conf.set("spark.executor.extraClassPath", psql_jar_path)
+conf.set("spark.driver.extraClassPath", psql_jar_path)
 
-float_fields = set(["trip_seconds", "trip_miles", "fare",
-                    "tip", "additional_charges", "trip_total"])
-
-int_fields = set(["trips_pooled"])
-
-# for each column name, assign it a specific type
-fields = [StructField(field_name, BooleanType())
-          if field_name in bool_fields
-          else StructField(field_name, FloatType())
-          if field_name in float_fields
-          else StructField(field_name, IntegerType())
-          if field_name in int_fields
-          else StructField(field_name, StringType())
-          for field_name in schemaString.split("\n")]
-
-# store schema
-schema = StructType(fields)
-
-# start spark session ----
+# create spark session ----
 spark = (
     SparkSession.builder
+    # Sets the Spark master URL to connect to, such as "local" to run locally
     .master("local[1]")
+    # Sets a name for the application, which will be shown in the Spark web UI
     .appName("Python Spark SQL example")
+    # use configuration options
+    .config(conf=conf)
+    # Gets an existing :class:SparkSession or, if there is no existing one,
+    # creates a new one based on the options set in this builder
     .getOrCreate()
 )
 
+print("Successfully create spark session")
+
 # load necessary data ----
 
-# load ride share data
-ride_share_df = (
-    spark.read.csv(path="raw_data/rideshare_2018_2019.csv",
-                   schema=schema,
-                   sep=",",
-                   header=False)
-    # convert strings to timestamp
-    .withColumn(
-        "trip_start_timestamp",
-        to_timestamp("trip_start", format="MM/dd/yyyy hh:mm:ss aa")
-        )
-    .withColumn(
-        "trip_end_timestamp",
-        to_timestamp("trip_end", format="MM/dd/yyyy hh:mm:ss aa")
-        )
-)
-
-# load community area data from the PSQL chicago database
-com_area_df = (
+# load IL job data at the census block level
+# note: IL job counts are from 2017
+jobs_df = (
     spark.read
     .format("jdbc")
     .option("url", "jdbc:postgresql:///chicago")
-    .option("dbtable", "community_areas")
+    .option("dbtable", "il_wac_s000_jt00_2017")
     .load()
 )
 
-# show data ----
-ride_share_df.show(n=5, truncate=True, vertical=True)
-com_area_df.show(n=5, truncate=True, vertical=True)
+# load 2010 IL census block to 2010 IL census tract crosswalk data
+xwalk_df = (
+    spark.read
+    .format("jdbc")
+    .option("url", "jdbc:postgresql:///chicago")
+    .option("dbtable", "il_xwalk")
+    .load()
+)
 
-# show schema ----
-com_area_df.printSchema()
+# load 2010 Chicago census tract data
+ct_df = (
+    spark.read
+    .format("jdbc")
+    .option("url", "jdbc:postgresql:///chicago")
+    .option("dbtable", "census_tracts_2010")
+    .load()
+)
 
-# count the historical number of dropoffs and pickups per community area ----
+# load current Chicago community area data
+cca_df = spark.read.csv(path="raw_data/community_areas.csv",
+                        schema=schema,
+                        sep=",",
+                        header=False)  # header is supplied in schema
 
-# register the DataFrames as a SQL temporary views
-ride_share_df.createOrReplaceTempView("ride_share")
-com_area_df.createOrReplaceTempView("com_area")
+# take a glimpse into the data ----
+jobs_df.show(n=5, truncate=True, vertical=True)
+xwalk_df.show(n=5, truncate=True, vertical=True)
+ct_df.show(n=5, truncate=True, vertical=True)
+cca_df.show(n=5, truncate=True, vertical=True)
 
-# store query
+# register the DataFrames as a SQL temporary views ----
+jobs_df.createOrReplaceTempView("jobs")
+xwalk_df.createOrReplaceTempView("xwalk")
+ct_df.createOrReplaceTempView("ct")
+cca_df.createOrReplaceTempView("cca")
+
+# count the number of jobs in each community area ----
+
+# Layer of geography:
+# many census blocks -> one census tract
+# many census tracts -> one community area
+# many community areas -> one City of Chicago
+# (note: 46826 blocks -> 801 tracts -> 77 community areas -> 1 city)
+
+# Logic:
+# to do this, we need to mark the community area each
+# Chicago census block resides in and
+# then identify the number of jobs in each census block
+
 query = """
-SELECT pickup_community_area AS community_area,
-       COUNT(pickup_community_area) AS pickup_count,
-       COUNT(dropoff_community_area) AS dropoff_count
-FROM ride_share
-GROUP BY community_area
-ORDER BY community_area
+SELECT cca.community,
+    SUM(jobs.c000) AS num_jobs
+FROM xwalk
+JOIN ct
+    ON xwalk.trct = ct.geoid10
+JOIN cca
+    ON ct.commarea = cca.area_numbe
+JOIN jobs
+    ON xwalk.tabblk2010 = jobs.w_geocode
+GROUP BY community
+ORDER BY num_jobs DESC
 """
 
 # execute query
-# sqlDF = spark.sql(query)
+jobs_cca = spark.sql(query)
 
 # display results
-# sqlDF.show(n=10, truncate=True, vertical=True)
+jobs_cca.show(n=5, truncate=True, vertical=True)
 
-# stop spark session ----
+# convert SparkDataFrame to Pandas DataFrame ----
+jobs_cca_df = jobs_cca.toPandas()
+
+print(jobs_cca_df.head())
+
+# visualize top ten CCAs by number of jobs ----
+plt.barh(y=jobs_cca_df["community"][0:9],
+         width=jobs_cca_df["num_jobs"][0:9])
+plt.title("Top 10 Community Areas by Number of Jobs, 2017")
+plt.xlabel("Total number of Jobs")
+plt.ylabel("Chicago community areas")
+plt.tight_layout()
+
+# export plot as PNG ----
+plt.savefig("visuals/top_ccas_by_jobs.png",
+            dpi=200,
+            bbox_inches="tight")
+
+# stop session ----
 spark.stop()

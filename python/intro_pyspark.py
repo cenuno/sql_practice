@@ -1,18 +1,12 @@
+"""
+An introduction to using pyspark to load data from .csv and psql
+and using SparkDataFrames and SQL to perform a query
+"""
+
 # load necessary modules ----
-from cca_schema import schema
-import os
-from pyspark import SparkConf
+from python.cca_schema import schema
 from pyspark.sql.session import SparkSession
 from matplotlib import pyplot as plt
-
-# add driver path ----
-psql_jar_path = os.getenv("PSQL_JAR")
-
-# create configuration ----
-conf = SparkConf()
-conf.set("spark.jars", psql_jar_path)
-conf.set("spark.executor.extraClassPath", psql_jar_path)
-conf.set("spark.driver.extraClassPath", psql_jar_path)
 
 # create spark session ----
 spark = (
@@ -21,9 +15,7 @@ spark = (
     .master("local[1]")
     # Sets a name for the application, which will be shown in the Spark web UI
     .appName("Python Spark SQL example")
-    # Set configuration option
-    .config(conf=conf)
-    # Gets an existing :class:SparkSession or, if there is no existing one, 
+    # Gets an existing :class:SparkSession or, if there is no existing one,
     # creates a new one based on the options set in this builder
     .getOrCreate()
 )
@@ -128,3 +120,6 @@ plt.tight_layout()
 plt.savefig("visuals/top_ccas_by_jobs.png",
             dpi=200,
             bbox_inches="tight")
+
+# stop session ----
+spark.stop()
