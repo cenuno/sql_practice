@@ -1,3 +1,7 @@
+#!/bin/bash
+
+echo "Start downloading data"
+
 # make raw_data dir
 mkdir raw_data
 
@@ -69,3 +73,5 @@ createdb chicago
 
 # transfer SQLite database to the chicago PostgreSQL database
 pgloader chicago.db postgresql:///chicago
+
+echo "Finished downloading data"
