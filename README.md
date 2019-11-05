@@ -16,7 +16,21 @@ Please run the following bash commands after you have forked and clone the `sql_
 sh setup.sh
 ```
 
-_Note: this repository assumes you have Homebrew and Anaconda installed on your macOS/Linux system. If not, please read this [tutorial](https://medium.com/ayuth/install-anaconda-on-macos-with-homebrew-c94437d63a37)._
+## `pyspark-env`
+
+This project relies on you using the [`environment.yml`](environment.yml) file to recreate the `pyspark-env` conda environment. To do so, please run the following commands:
+
+```bash
+# create pyspark-env environment from the environment.yml file
+conda env create -f environment.yml
+
+# activate (switch into) the pyspark-env conda environment
+conda activate pyspark-env
+
+# make pyspark-env available to you as a kernel in jupyter
+python -m ipykernel install --user --name pyspark-env --display-name "pyspark-env"
+```
+
 
 ## `chicago` Database
 
@@ -49,7 +63,7 @@ To download the data, set aside about ~1.5 hours to download the file using the
 following command:
 
 ```bash
-sh bash/05_ride_share_data.sh
+sh bash/04_ride_share_data.sh
 ```
 
 ## Questions
