@@ -1,3 +1,7 @@
+"""
+Reshape cps dropout data from wide to long
+"""
+
 # load necessary packages ----
 import pandas as pd
 
@@ -9,7 +13,7 @@ def clean_int_text(x):
 
 
 # load necessary data ----
-cps_dropout_df = pd.read_csv("cps_dropout_rate_2011_2019.csv")
+cps_dropout_df = pd.read_csv("raw_data/raw_cps_dropout_rate_2011_2019.csv")
 
 # data preprocessing ----
 # make all column names lower case and
@@ -43,7 +47,7 @@ cps_dropout_df_long.sort_values(by=["school_id", "school_year"], inplace=True)
 cps_dropout_df_long.reset_index(drop=True, inplace=True)
 
 # export the data frame as a .csv file ----
-cps_dropout_df_long.to_csv("../write_data/cps_dropout_rate_2011_2019.csv",
+cps_dropout_df_long.to_csv("write_data/clean_cps_dropout_rate_2011_2019.csv",
                            index=False)
 
 # end of script #

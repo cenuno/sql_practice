@@ -58,9 +58,6 @@ brew install hadoop
 # install suite of command-line tools for converting to and working with CSV
 brew install csvkit
 
-# install csvs-to-sqlite to convert csv files to SQLite database
-pip3 install csvs-to-sqlite
-
 # Check for PostgreSQL; install if we don't have it
 # for more info, see: https://formulae.brew.sh/formula/postgresql
 if test ! $(which postgres); then
@@ -71,8 +68,5 @@ fi
 # start PostgreSQL services
 echo "Ensuring PostgreSQL services are running..."
 brew services start postgresql
-
-# install pgloader to transform SQLite database to a PostgreSQL database
-brew install --HEAD pgloader
 
 echo "Finished installing necessary packages"
