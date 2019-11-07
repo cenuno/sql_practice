@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Start installing necessary packages"
+echo "Start installing necessary packages at $(date)"
 
 # Check for xcode-select; install if we don't have it
 # for more information, see: https://help.apple.com/xcode/mac/current/#/devc8c2a6be1
@@ -41,19 +41,30 @@ fi
 brew upgrade && brew update
 
 # install open source implementation of the Java Platform, Standard Edition
+# for more info, see: https://github.com/AdoptOpenJDK/homebrew-openjdk#adoptopenjdk---homebrew-tap
 brew cask install adoptopenjdk
 
 # install the scala programming language
-brew install scala
+# for more info, see: https://formulae.brew.sh/formula/scala
+if test ! $(which scala); then
+    echo "Installing scala..."
+    brew install scala
+fi
 
 # install java8
+# for more info, see: https://github.com/AdoptOpenJDK/homebrew-openjdk/issues/106
 brew cask install homebrew/cask-versions/adoptopenjdk8
 
 # install apache spark
+# for more info, see: https://formulae.brew.sh/formula/apache-spark
 brew install apache-spark
 
 # install hadoop in case you wish to use other types of clusters
-brew install hadoop
+# for more info, see: https://formulae.brew.sh/formula/hadoop
+if test ! $(which hadoop); then
+    echo "Installing hadoop..."
+    brew install hadoop
+fi
 
 # install suite of command-line tools for converting to and working with CSV
 brew install csvkit
@@ -69,4 +80,4 @@ fi
 echo "Ensuring PostgreSQL services are running..."
 brew services start postgresql
 
-echo "Finished installing necessary packages"
+echo "Finished installing necessary packages at $(date)"

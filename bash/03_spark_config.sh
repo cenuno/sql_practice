@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Start configuring your machine to the proper spark settings by directly modifying your ~/.bash_profile"
+echo "Start configuring your machine to the proper spark settings by directly modifying your ~/.bash_profile at $(date)"
 
 # download the jar for PostgreSQL JDBC Driver 42.1.1 directly from the Maven repository
 # note: the .jar file will be placed into the appropriate jars/ directory
@@ -39,4 +39,4 @@ echo "${py_path_comment}\n${py_path_var}" >> ~/.bash_profile
 echo "\n# === End of additions by https://github.com/cenuno/sql_practice/ ===\n" \
 >> ~/.bash_profile
 
-echo "Finished configuring your machine to the proper spark settings by directly modifying your ~/.bash_profile"
+echo "Finished configuring your machine to the proper spark settings by directly modifying your ~/.bash_profile at $(date)"

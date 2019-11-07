@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Start downloading data"
+echo "Start downloading data at $(date)"
 
 # bash function used to retrieve the absolute file path of a file as a string
 # note: thank you to peterh's answer on SO 
@@ -93,4 +93,4 @@ psql \
     --set IL_XWALK_PATH=$IL_XWALK_PATH \
     --echo-all
 
-echo "Finished downloading data"
+echo "Finished downloading data at $(date)"
