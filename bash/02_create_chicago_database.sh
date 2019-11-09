@@ -10,12 +10,6 @@ get_str_abs_filename() {
   echo "'$(cd "$(dirname "$1")" && pwd)/$(basename "$1")'"
 }
 
-# make write_data dir
-mkdir write_data
-
-# create write_data/ README
-echo $'# Write Data\n\nThis directory will store data created by us.\n' > write_data/README.md
-
 # download 2017 IL jobs data
 wget https://lehd.ces.census.gov/data/lodes/LODES7/il/wac/il_wac_S000_JT00_2017.csv.gz
 
