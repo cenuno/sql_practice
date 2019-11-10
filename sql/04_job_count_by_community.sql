@@ -12,18 +12,22 @@
                 Chicago census block resides in and
                 then identify the number of jobs in each census block
 */
-SELECT community_areas.community AS cca_name,
-        SUM(il_jobs_2017.c000) AS num_jobs_2017
-FROM il_xwalk
--- Limit geographic crosswalk records to those found in Chicago
-INNER JOIN census_tracts_2010
-    ON il_xwalk.trct = census_tracts_2010.geoid10
--- Obtain the community area name
-LEFT JOIN community_areas
-    ON census_tracts_2010.commarea_n = community_areas.area_numbe
--- Obtain job data to only those found in Chicago census tracts
--- note: since some census blocks don't have employment, we're dropping them
-INNER JOIN il_jobs_2017
-    ON il_xwalk.tabblk2010::TEXT = il_jobs_2017.w_geocode
-GROUP BY cca_name
-ORDER BY num_jobs_2017 DESC;
+DROP TABLE IF EXISTS jobs_by_cca;
+
+CREATE TABLE jobs_by_cca AS (
+    SELECT community_areas.community AS cca_name,
+            SUM(il_jobs_2017.c000) AS num_jobs_2017
+    FROM il_xwalk
+    -- Limit geographic crosswalk records to those found in Chicago
+    INNER JOIN census_tracts_2010
+        ON il_xwalk.trct = census_tracts_2010.geoid10
+    -- Obtain the community area name
+    LEFT JOIN community_areas
+        ON census_tracts_2010.commarea_n = community_areas.area_numbe
+    -- Obtain job data to only those found in Chicago census tracts
+    -- note: since some census blocks don't have employment, we're dropping them
+    INNER JOIN il_jobs_2017
+        ON il_xwalk.tabblk2010::TEXT = il_jobs_2017.w_geocode
+    GROUP BY cca_name
+    ORDER BY num_jobs_2017 DESC
+);
