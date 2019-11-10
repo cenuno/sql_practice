@@ -38,6 +38,7 @@ SELECT community_areas.community AS cca_name,
         crimes_2019."Community Area" AS cca_num, 
         COUNT(crimes_2019.id) AS num_arrests
 FROM crimes_2019
+-- for each arrest, grab its corresponding community area text
 LEFT JOIN community_areas
     ON crimes_2019."Community Area" = community_areas.area_numbe
 GROUP BY cca_name, cca_num
