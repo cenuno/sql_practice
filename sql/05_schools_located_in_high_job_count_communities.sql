@@ -29,11 +29,36 @@ CREATE TABLE school_cca_jobs AS (
 );
 
 -- Check the overall_rating count for these CPS schools in high employment areas
--- TODO: add pct of total (https://stackoverflow.com/questions/6489848/percent-to-total-in-postgresql-without-subquery)
-SELECT overall_rating, COUNT(overall_rating) AS count
-FROM school_cca_jobs
-GROUP BY overall_rating
-ORDER BY overall_rating;
+/*
+    For more on window functions (i.e. OVER()), see these posts:
+    https://stackoverflow.com/questions/6489848/percent-to-total-in-postgresql-without-subquery
+    https://www.postgresql.org/docs/current/tutorial-window.html
+*/
+SELECT  *,
+        SUM(count) OVER() AS total,
+        ROUND((count / SUM(count) OVER()) * 100, 2) AS pct
+FROM (
+    SELECT  overall_rating,
+            COUNT(overall_rating) AS count
+    FROM school_cca_jobs
+    GROUP BY overall_rating
+    ORDER BY overall_rating
+) AS temp;
 
 -- Compare it to the distribution against all CPS schools
+SELECT  *,
+        SUM(count) OVER() AS total,
+        ROUND((count / SUM(count) OVER()) * 100, 2) AS pct
+FROM (
+    SELECT  overall_rating,
+            COUNT(overall_rating) AS count
+    FROM cps_sy1819_cca
+    GROUP BY overall_rating
+    ORDER BY overall_rating
+) AS temp;
 
+/*
+    Conclusion: those schools in higher employment areas have a larger proportion
+                of Level 1+ schools (40%) when compared to the proportion of
+                Level 1+ schools across all of CPS (28%)
+*/
